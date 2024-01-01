@@ -22,7 +22,8 @@
     "@semantic-release/github": "^9.2.6",
     "@semantic-release/release-notes-generator": "^12.1.0",
     "cz-conventional-changelog": "^3.3.0",
-    "electron": "^28.1.0"
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1"
   },
   "dependencies": {
     "applescript": "^1.0.0"
