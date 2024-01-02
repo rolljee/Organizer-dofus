@@ -31,7 +31,37 @@ function getDofusPids() {
         .map((pid) => parseInt(pid, 10))
         .sort((a, b) => b - a);
 
-      resolve(pids);
+      const promises = pids.map((pid) => getDofusWindowName(pid));
+
+      Promise.all(promises)
+        .then((pair) => {
+          resolve(pair);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+}
+
+function getDofusWindowName(pid) {
+  return new Promise((resolve, reject) => {
+    const script = `
+  set targetPID to ${pid}
+  
+  tell application "System Events"
+      set windowName to name of first window of (every process whose unix id is targetPID)
+  end tell
+  
+  return windowName
+      `;
+
+    appleScript.execString(script, (err, rtn) => {
+      if (err) {
+        reject(err);
+      }
+
+      resolve({ pid, name: rtn[0].split("-")[0].trim() });
     });
   });
 }
@@ -39,4 +69,5 @@ function getDofusPids() {
 module.exports = {
   getDofusPids,
   bringWindowToFront,
+  getDofusWindowName,
 };

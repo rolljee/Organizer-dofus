@@ -3,17 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
     <title>Organizer</title>
-    <link rel="script-src" href="organizer.js" />
+    <script src="./app/handlebars.js"></script>
+    <script src="./app/organizer.js"></script>
   </head>
   <body>
     <h1>Organizer</h1>
-    <div id="app">
-      Use Command+1 to go through each instances
-    </div>
+    <div id="app">Use Command+1 to go through each instances</div>
+
+    <script id="list-instances" type="text/x-handlebars-template">
+      <ul>
+        {{#each instances}}
+          <li>
+            <p>{{this.name}} <button onclick="openWindow({{this.pid}})">open</button></p>
+          </li>
+        {{/each}}
+      </ul>
+    </script>
+
+    <button onclick="refresh()">Refresh</button>
+
+    <div id="instances"></div>
   </body>
 </html>
