@@ -19,3 +19,15 @@ Pour le moment, c'est très brut, mais ça fonctionne.
 Tu peux changer de fenêtre en utilisant la combinaison de touche suivante : Command+1
 
 Lorsque tu lances l'app elle va aller chercher toutes les fenêtres de Dofus qui sont ouverte et te permettre d'alterner sur chacune d'entre elles.
+
+# 1.1.0
+
+C'est mieux !
+
+On peut maintenant avoir la liste des fenêtres ouvertes et on peut les classer par ordre d'initiative.
+
+Tu peux aussi ouvrir les fenêtres depuis l'interface.
+
+C'est maintenant dans la menubar et ça reste "on top" de tous les éléments.
+
+Il n'est toujours pas possible de modifier de modifier le raccourci clavier, mais ça viendra.

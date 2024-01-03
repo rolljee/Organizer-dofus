@@ -1,8 +1,27 @@
+let instances = [];
+
+Handlebars.registerHelper("isFirstInList", function (values) {
+  return values.index === 0;
+});
+
+Handlebars.registerHelper("isLastInList", function (values) {
+  return values.index === instances.length - 1;
+});
+
+function setUp(index) {
+  window.electron.ipcRenderer.sendMessage("set-up", index);
+}
+
+function setDown(index) {
+  window.electron.ipcRenderer.sendMessage("set-down", index);
+}
+
 function listDofusPids(pids) {
   const template = document.getElementById("list-instances").innerHTML;
   const compiled = Handlebars.compile(template);
 
-  const rendered = compiled({ instances: pids });
+  instances = pids;
+  const rendered = compiled({ instances: instances });
 
   document.getElementById("instances").innerHTML = rendered;
 }

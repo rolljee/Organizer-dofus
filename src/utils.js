@@ -15,7 +15,7 @@ end tell
   });
 }
 
-function getDofusPids() {
+function getDofusInstances() {
   const command =
     "ps aux | grep './Dofus.app/Contents/MacOS/Dofus' | grep -v grep | awk '{print $2}'";
 
@@ -35,6 +35,10 @@ function getDofusPids() {
 
       Promise.all(promises)
         .then((pair) => {
+          pair.forEach((obj, index) => {
+            obj.index = index;
+          });
+
           resolve(pair);
         })
         .catch((err) => {
@@ -67,7 +71,7 @@ function getDofusWindowName(pid) {
 }
 
 module.exports = {
-  getDofusPids,
+  getDofusInstances,
   bringWindowToFront,
   getDofusWindowName,
 };

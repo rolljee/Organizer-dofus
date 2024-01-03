@@ -1,9 +1,6 @@
 const { app, BrowserWindow, globalShortcut, ipcMain } = require("electron");
-const {
-  getDofusPids,
-  bringWindowToFront,
-  getDofusWindowName,
-} = require("./utils");
+const { getDofusInstances, bringWindowToFront } = require("./utils");
+const { menubar } = require("menubar");
 
 class Organizer {
   constructor() {
@@ -12,34 +9,25 @@ class Organizer {
   }
 
   start() {
-    const createWindow = () => {
-      const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+    const mb = menubar({
+      browserWindow: {
+        alwaysOnTop: true,
+        width: 400,
+        height: 400,
         webPreferences: {
           preload: `${__dirname}/preload.js`,
           nodeIntegration: true,
           contextIsolation: true,
           enableRemoteModule: true,
-        },
+        }
+      }
+    });
+
+    mb.on('ready', () => {
+      app.whenReady().then(() => {
+        this.addShotcuts();
+        this.addListeners();
       });
-
-      win.loadFile("index.html");
-
-      win.webContents.openDevTools();
-    };
-
-    app.whenReady().then(() => {
-      createWindow();
-    });
-
-    app.whenReady().then(async () => {
-      this.addShotcuts();
-      this.addListeners();
-    });
-
-    app.on("will-quit", () => {
-      globalShortcut.unregisterAll();
     });
   }
 
@@ -66,8 +54,12 @@ class Organizer {
   }
 
   addListeners() {
+    app.on("will-quit", () => {
+      globalShortcut.unregisterAll();
+    });
+
     ipcMain.on("refresh-pids", (event) => {
-      getDofusPids().then((pids) => {
+      getDofusInstances().then((pids) => {
         this.pids = pids;
         event.reply("get-pids-response", this.pids);
       });
@@ -80,6 +72,43 @@ class Organizer {
     ipcMain.on("open-window", (event, pid) => {
       bringWindowToFront(pid);
     });
+
+    ipcMain.on("set-up", (event, index) => {
+      this.setUp(event, index);
+    });
+
+    ipcMain.on("set-down", (event, index) => {
+      this.setDown(event, index);
+    });
+  }
+
+  setUp(event, index) {
+    const instance = this.pids.find((instance) => instance.index === index);
+    instance.index -= 1;
+
+    const instanceAbove = this.pids.find(
+      (instance) => instance.index === index - 1
+    );
+    instanceAbove.index += 1;
+
+    this.pids.sort((a, b) => a.index - b.index);
+
+    event.reply("get-pids-response", this.pids);
+  }
+
+  setDown(event, index) {
+    const instanceUpper = this.pids.find(
+      (instance) => instance.index === index + 1
+    );
+
+    instanceUpper.index -= 1;
+
+    const instance = this.pids.find((instance) => instance.index === index);
+    instance.index += 1;
+
+    this.pids.sort((a, b) => a.index - b.index);
+
+    event.reply("get-pids-response", this.pids);
   }
 }
 

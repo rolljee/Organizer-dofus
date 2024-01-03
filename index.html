@@ -4,25 +4,83 @@
     <meta charset="UTF-8" />
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <title>Organizer</title>
+    <link rel="stylesheet" href="./app/bootstrap.css" />
+    <link rel="stylesheet" href="./app/fontawesome.css" />
+
+    <script src="./app/fontawesome.min.js"></script>
+    <script src="./app/bootstrap.js"></script>
     <script src="./app/handlebars.js"></script>
     <script src="./app/organizer.js"></script>
   </head>
   <body>
-    <h1>Organizer</h1>
-    <div id="app">Use Command+1 to go through each instances</div>
+    <div class="container">
+      <h1 class="text-center">Organizer</h1>
+      <div class="row mt-3">
+        <div class="col">Hotkey</div>
+        <div class="col text-white bg-secondary border-1 rounded">
+          Command+1
+        </div>
+        <div class="col"></div>
+      </div>
 
-    <script id="list-instances" type="text/x-handlebars-template">
-      <ul>
-        {{#each instances}}
-          <li>
-            <p>{{this.name}} <button onclick="openWindow({{this.pid}})">open</button></p>
-          </li>
-        {{/each}}
-      </ul>
-    </script>
+      <div class="row mt-1">
+        <div class="col">Refresh</div>
+        <div class="col">
+          <button type="button" class="btn btn-light" onclick="refresh()">
+            <i class="fa fa-refresh"></i>
+          </button>
+        </div>
+        <div class="col"></div>
+      </div>
 
-    <button onclick="refresh()">Refresh</button>
+      <hr />
 
-    <div id="instances"></div>
+      <script id="list-instances" type="text/x-handlebars-template">
+        <div class="mt-2">
+          <ol class="list-group list-group-numbered">
+            {{#each instances}}
+              <li class="list-group-item">
+                {{this.name}}
+
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onclick="openWindow({{this.pid}})"
+                >
+                  open
+                </button>
+
+                {{#if (isFirstInList this)}}
+                  {{! Nothing to do here }}
+                {{else}}
+
+                  <button
+                    type="button"
+                    class="btn btn-light"
+                    onclick="setUp({{this.index}})"
+                  >
+                    <i class="fa fa-arrow-up"></i>
+                  </button>
+                {{/if}}
+
+                {{#if (isLastInList this)}}
+                  {{! Nothing to do here }}
+                {{else}}
+                  <button
+                    type="button"
+                    class="btn btn-light"
+                    onClick="setDown({{this.index}})"
+                  >
+                    <i class="fa fa-arrow-down"></i>
+                  </button>
+                {{/if}}
+              </li>
+            {{/each}}
+          </ol>
+        </div>
+      </script>
+
+      <div id="instances"></div>
+    </div>
   </body>
 </html>
