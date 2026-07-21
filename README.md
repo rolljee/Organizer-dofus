@@ -1,5 +1,11 @@
 # Organizer
 
+> ⚠️ **Projet archivé**
+>
+> Ce projet n'est plus maintenu. La nouvelle version de Dofus (sous Unity) prend désormais en charge nativement le multicompte et le changement de fenêtre… enfin ! 🎉
+>
+> Cette application n'a donc plus de raison d'être. Merci à toutes celles et ceux qui l'ont utilisée.
+
 Tu joues à Dofus multicomptes et tu es sur mac ? 
 
 Tu connais déjà probablement que sur windows il existe quelques des outils pour simplifier la gestion de changement de fenêtre pour éviter d'utiliser, mais sur mac il n'y a rien.
@@ -30,4 +36,4 @@ Tu peux aussi ouvrir les fenêtres depuis l'interface.
 
 C'est maintenant dans la menubar et ça reste "on top" de tous les éléments.
 
-Il n'est toujours pas possible de modifier de modifier le raccourci clavier, mais ça viendra.
+Il n'est toujours pas possible de modifier le raccourci clavier, mais ça viendra.
